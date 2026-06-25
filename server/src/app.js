@@ -12,13 +12,18 @@ const app = express();
 
 // Middleware Security Setup
 app.use(helmet());
+// CORS setup - allow preflight and include OPTIONS explicitly
 app.use(
   cors({
     origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 204,
   })
 );
+
+// Ensure OPTIONS preflight requests are handled globally
+app.options('*', cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
