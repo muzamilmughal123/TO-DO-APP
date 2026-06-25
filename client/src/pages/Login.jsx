@@ -146,18 +146,18 @@ const Login = () => {
           </button>
         </form>
 
-        {/* Divider separator */}
-        <div className="relative my-6">
+        {/* Divider separator - TEMPORARILY DISABLED */}
+        {/* <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-slate-800"></div>
           </div>
           <div className="relative flex justify-center text-xs uppercase">
             <span className="bg-slate-950 px-3 text-slate-500 font-medium">Or continue with</span>
           </div>
-        </div>
+        </div> */}
 
-        {/* Google OAuth action */}
-        <button
+        {/* Google OAuth action - TEMPORARILY DISABLED */}
+        {/* <button
           onClick={handleGoogleLoginMock}
           disabled={googleLoading}
           className="w-full flex items-center justify-center gap-3 py-2.5 rounded-xl border border-slate-800 bg-slate-900/40 hover:bg-slate-900/80 transition-colors font-medium text-sm text-slate-200"
@@ -187,7 +187,7 @@ const Login = () => {
               <span>Sign in with Google (Mock)</span>
             </>
           )}
-        </button>
+        </button> */}
 
         {/* Route footer */}
         <p className="mt-8 text-center text-xs text-slate-500">
@@ -211,9 +211,9 @@ const Login = () => {
             <div>User: <span className="text-blue-300">user@task.com</span></div>
             <div>Pass: <span className="text-blue-300">user123</span></div>
           </div>
-          <p className="text-[10px] text-slate-500 mt-1 italic">
+          {/* <p className="text-[10px] text-slate-500 mt-1 italic">
             *You can also click the Google button to instantly log in as a Manager.
-          </p>
+          </p> */}
         </div>
 
       </div>
