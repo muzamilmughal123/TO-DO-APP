@@ -22,8 +22,7 @@ app.use(
   })
 );
 
-// Ensure OPTIONS preflight requests are handled globally
-app.options('*', cors());
+// Let the global CORS middleware handle preflight; remove explicit options route
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
