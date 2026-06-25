@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Set base URL from environment or default to localhost API
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// Set base URL from environment or fallback to the production Railway backend
+const API_URL = import.meta.env.VITE_API_URL || 'https://to-do-app-production-ab9c.up.railway.app/api';
 
 const api = axios.create({
   baseURL: API_URL,

@@ -12,8 +12,13 @@ const app = express();
 
 // Middleware Security Setup
 app.use(helmet());
-// CORS setup - allow all origins by default (simple middleware)
-    app.use(cors());
+// CORS setup - reflect request origin and allow credentials for cookie/token flows
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 
 // Let the global CORS middleware handle preflight; remove explicit options route
 app.use(express.json());
