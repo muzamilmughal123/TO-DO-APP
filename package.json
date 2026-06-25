@@ -1,0 +1,17 @@
+{
+  "name": "project-root",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev -- --host 0.0.0.0\"",
+    "start": "concurrently \"cd server && npm start\" \"cd client && npm run preview\"",
+    "build": "cd client && npm run build",
+    "deploy": "npm run build && npm run start",
+    "test:smoke": "node ./sqa-smoke-test.js",
+    "test": "npm run test:smoke",
+    "test:unit": "cd server && npm test && cd ..\\client && npm test",
+    "test:all": "npm run test && npm run test:unit"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.1"
+  }
+}
