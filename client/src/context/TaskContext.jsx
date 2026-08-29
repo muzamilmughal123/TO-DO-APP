@@ -138,8 +138,12 @@ export const TaskProvider = ({ children }) => {
       return;
     }
 
-    const PROD_SOCKET = 'https://to-do-app-production-ab9c.up.railway.app';
-    const socketUrl = import.meta.env.VITE_SOCKET_URL || (import.meta.env.PROD ? PROD_SOCKET : 'http://localhost:5000');
+    // On Vercel, the Socket.io server shares the same origin as the frontend.
+    // Use VITE_SOCKET_URL to override (e.g. when the API lives on a separate Railway deployment).
+    // In production with no override, use window.location.origin so the socket
+    // connects back to the same host — no hardcoded Railway URL needed.
+    const socketUrl = import.meta.env.VITE_SOCKET_URL
+      || (import.meta.env.PROD ? window.location.origin : 'http://localhost:5000');
     const newSocket = io(socketUrl);
     setSocket(newSocket);
 
