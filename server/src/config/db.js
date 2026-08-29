@@ -24,38 +24,16 @@ const connectDB = async () => {
     return cached.conn;
   }
 
-  // Build connection URI — support both MONGODB_URI and MONGO_URI env vars.
-  const uri = process.env.MONGODB_URI || process.env.MONGO_URI;
-
-  if (!uri) {
-    // No URI supplied — fall back to in-memory MongoDB (dev / CI only).
-    console.warn('No MONGODB_URI or MONGO_URI env var found. Starting in-memory MongoDB fallback...');
-
-    if (!cached.promise) {
-      cached.promise = (async () => {
-        const { MongoMemoryServer } = require('mongodb-memory-server');
-        const mongoServer = await MongoMemoryServer.create();
-        const memUri = mongoServer.getUri();
-        console.log(`In-Memory MongoDB URI: ${memUri}`);
-        return mongoose.connect(memUri, {
-          bufferCommands: false,
-          connectTimeoutMS: 10000,
-        });
-      })();
-    }
-
-    cached.conn = await cached.promise;
-    return cached.conn;
-  }
+  // Hardcoded connection URI for debugging
+  const uri = 'mongodb+srv://appuser:AppUser12345@cluster0.irefmqn.mongodb.net/todoapp?retryWrites=true&w=majority';
 
   // Normal path — connect once and cache the promise so concurrent cold-start
   // invocations don't race to open multiple connections.
   if (!cached.promise) {
     cached.promise = mongoose
       .connect(uri, {
-        bufferCommands: false,      // fail fast instead of buffering ops
-        connectTimeoutMS: 10000,    // surface timeout errors quickly
-        serverSelectionTimeoutMS: 10000,
+        bufferCommands: false,
+        connectTimeoutMS: 10000,
       })
       .then((m) => {
         console.log(`MongoDB Connected: ${m.connection.host}`);
