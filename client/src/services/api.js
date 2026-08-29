@@ -1,8 +1,12 @@
 import axios from 'axios';
 
-// Set base URL from environment; fallback to production Railway for production builds, otherwise localhost for dev
-const PROD_API = 'https://to-do-app-production-ab9c.up.railway.app/api';
-const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? PROD_API : 'http://localhost:5000/api');
+// Priority:
+//   1. Explicit VITE_API_URL env var (set this in Vercel dashboard or .env for any custom deployment)
+//   2. In production with no env var → relative '/api' so requests hit the same Vercel deployment
+//      (frontend and serverless API share the same origin — no CORS required)
+//   3. In local dev → localhost Express server
+const API_URL = import.meta.env.VITE_API_URL
+  || (import.meta.env.PROD ? '/api' : 'http://localhost:5000/api');
 
 const api = axios.create({
   baseURL: API_URL,
