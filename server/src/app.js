@@ -10,20 +10,30 @@ const reportRoutes = require('./routes/reportRoutes');
 
 const app = express();
 
-// CORS must be configured before helmet so preflight responses carry the right headers.
-const corsOptions = {
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-};
+// CORS must be registered before helmet and all routes so that preflight
+// responses carry Access-Control-* headers.  The cors() middleware already
+// handles OPTIONS when placed in app.use(), but Express 5 does not support
+// wildcard strings in app.options(), so we add an explicit middleware to
+// short-circuit every OPTIONS preflight with a 204 immediately after cors().
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    credentials: true,
+  })
+);
 
-// Handle preflight OPTIONS requests for every route first.
-app.options('*', cors(corsOptions));
+// Explicit preflight handler — required in Express 5 because wildcard
+// app.options('*') is not supported.
+app.use((req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
 
-// Apply CORS headers to all other requests.
-app.use(cors(corsOptions));
-
-// Security headers (after CORS so helmet doesn't strip CORS headers).
+// Security headers (after CORS so helmet does not strip CORS headers).
 app.use(helmet());
 
 app.use(express.json());
