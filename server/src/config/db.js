@@ -24,7 +24,7 @@ const connectDB = async () => {
     return cached.conn;
   }
 
-  const uri = process.env.MONGODB_URI || 'mongodb+srv://appuser:muzamil1@cluster0.irefmqn.mongodb.net/todoapp?retryWrites=true&w=majority';
+  const uri = process.env.MONGODB_URI || 'mongodb+srv://mboy982247_db_user:muzamil1@cluster0.irefmqn.mongodb.net/todoapp?retryWrites=true&w=majority';
 
   // Normal path — connect once and cache the promise so concurrent cold-start
   // invocations don't race to open multiple connections.
