@@ -138,7 +138,8 @@ export const TaskProvider = ({ children }) => {
       return;
     }
 
-    const socketUrl = import.meta.env.VITE_SOCKET_URL || 'https://to-do-app-production-ab9c.up.railway.app';
+    const PROD_SOCKET = 'https://to-do-app-production-ab9c.up.railway.app';
+    const socketUrl = import.meta.env.VITE_SOCKET_URL || (import.meta.env.PROD ? PROD_SOCKET : 'http://localhost:5000');
     const newSocket = io(socketUrl);
     setSocket(newSocket);
 
