@@ -17,7 +17,11 @@ const app = express();
 // short-circuit every OPTIONS preflight with a 204 immediately after cors().
 app.use(
   cors({
-    origin: '*',
+    // origin: true reflects the request origin back, which satisfies both:
+    //   - same-origin Vercel requests (frontend + API on same domain)
+    //   - credentialed cross-origin requests (credentials: true requires a
+    //     specific origin, not the '*' wildcard — browsers reject the combo)
+    origin: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
     credentials: true,
