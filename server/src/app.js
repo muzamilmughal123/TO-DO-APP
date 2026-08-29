@@ -10,17 +10,22 @@ const reportRoutes = require('./routes/reportRoutes');
 
 const app = express();
 
-// Middleware Security Setup
-app.use(helmet());
-// CORS setup - reflect request origin and allow credentials for cookie/token flows
-app.use(
-  cors({
-    origin: true,
-    credentials: true,
-  })
-);
+// CORS must be configured before helmet so preflight responses carry the right headers.
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
 
-// Let the global CORS middleware handle preflight; remove explicit options route
+// Handle preflight OPTIONS requests for every route first.
+app.options('*', cors(corsOptions));
+
+// Apply CORS headers to all other requests.
+app.use(cors(corsOptions));
+
+// Security headers (after CORS so helmet doesn't strip CORS headers).
+app.use(helmet());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
