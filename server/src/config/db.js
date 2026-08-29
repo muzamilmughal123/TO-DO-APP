@@ -24,8 +24,7 @@ const connectDB = async () => {
     return cached.conn;
   }
 
-  // Hardcoded connection URI for debugging
-  const uri = 'mongodb+srv://appuser:AppUser12345@cluster0.irefmqn.mongodb.net/todoapp?retryWrites=true&w=majority';
+  const uri = process.env.MONGODB_URI || 'mongodb+srv://appuser:AppUser12345@cluster0.irefmqn.mongodb.net/todoapp?retryWrites=true&w=majority';
 
   // Normal path — connect once and cache the promise so concurrent cold-start
   // invocations don't race to open multiple connections.
@@ -41,6 +40,7 @@ const connectDB = async () => {
       })
       .catch((err) => {
         // Reset the cached promise on failure so the next invocation retries.
+        console.error('MongoDB connection error details:', err);
         cached.promise = null;
         throw err;
       });
@@ -51,7 +51,7 @@ const connectDB = async () => {
   } catch (err) {
     // In serverless, never call process.exit() — it kills the entire function
     // worker.  Let the error propagate so the request returns a 500 instead.
-    console.error(`Database connection error: ${err.message}`);
+    console.error('Database connection error:', err);
     throw err;
   }
 
